@@ -42,4 +42,8 @@
             </fieldset>
         </fields>
     </config>
+
+    <updateservers>
+        <server type="extension" priority="1" name="Akeeba Panopticon Connector for Joomla! 3.9 and 3.10">https://github.com/akeeba/panopticon_connector_j3/updates/plg_system_panopticon.xml</server>
+    </updateservers>
 </extension>

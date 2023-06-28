@@ -1,8 +1,8 @@
 {
-	"name": "akeeba/panopticon-connector-j3",
+	"name": "akeeba/panopticon_connector_j3",
 	"type": "project",
 	"description": "Akeeba Panopticon Connector for Joomla! 3.x",
-	"homepage": "https://github.com/akeeba/panopticon-connector-j3",
+	"homepage": "https://github.com/akeeba/panopticon_connector_j3",
 	"license": "AGPL-3.0+",
 	"authors": [
 		{

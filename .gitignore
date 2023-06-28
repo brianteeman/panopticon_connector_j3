@@ -1,0 +1,9 @@
+### Generated files
+/plugins/system/panopticon/version.php
+
+### Composer
+/vendor
+
+### Build & Release files
+/build/override.properties
+/release

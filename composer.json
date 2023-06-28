@@ -1,0 +1,30 @@
+{
+	"name": "akeeba/panopticon-connector-j3",
+	"type": "project",
+	"description": "Akeeba Panopticon Connector for Joomla! 3.x",
+	"homepage": "https://github.com/akeeba/panopticon-connector-j3",
+	"license": "AGPL-3.0+",
+	"authors": [
+		{
+			"name": "Nikolaos Dionysopoulos",
+			"email": "nicholas_NO_SPAM_PLEASE@akeeba.com",
+			"homepage": "http://www.akeeba.com",
+			"role": "Lead Developer"
+		}
+	],
+	"require": {
+		"php": "^7.2.5|^8.0",
+		"ext-curl": "*",
+		"ext-mbstring": "*",
+		"ext-json": "*",
+		"ext-simplexml": "*"
+	},
+	"suggest": {
+		"ext-zend-opcache": "*"
+	},
+	"config": {
+		"platform": {
+			"php": "7.2.5"
+		}
+	}
+}

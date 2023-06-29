@@ -148,7 +148,7 @@ class AkeebaBackupInfo extends AbstractController
 	private function getVersionFromExtensionsTable(): ?string
 	{
 		$db    = \JFactory::getDbo();
-		$query = $db->getQuery()
+		$query = $db->getQuery(true)
 			->select($db->quoteName('manifest_cache'))
 			->from($db->quoteName('#__extensions'))
 			->where(

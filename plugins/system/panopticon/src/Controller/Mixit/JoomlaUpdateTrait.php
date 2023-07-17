@@ -77,8 +77,6 @@ trait JoomlaUpdateTrait
 			return $updateInfo;
 		}
 
-		// TODO Mama mia!
-
 		// Update updateSiteUrl and lastUpdateTimestamp from the first update site for the core pseudo-extension
 		/** @var \JTableUpdatesite $updateSiteTable */
 		$updateSiteTable = \JTable::getInstance('Updatesite');
@@ -114,8 +112,7 @@ trait JoomlaUpdateTrait
 					[
 						'version',
 						'detailsurl',
-						'infourl',
-						'changelogurl',
+						'infourl'
 					]
 				)
 			)
@@ -148,7 +145,6 @@ trait JoomlaUpdateTrait
 			$updateInfo->latestStability = $this->detectStability($latest->version);
 			$updateInfo->details         = $latest->detailsurl;
 			$updateInfo->info            = $latest->infourl;
-			$updateInfo->changelog       = $latest->changelogurl;
 			$updateInfo->needsUpdate     = version_compare($latest->version, $updateInfo->current, 'gt');
 		}
 

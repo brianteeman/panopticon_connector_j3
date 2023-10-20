@@ -57,14 +57,14 @@ class plgSystemPanopticon extends \JPlugin
 		}
 
 		// The remaining path must start with self::PATH_PREFIX followed by a slash
-		$commmonPrefix = self::PATH_PREFIX . '/';
+		$commonPrefix = self::PATH_PREFIX . '/';
 
-		if (substr($currentPath, 0, strlen($commmonPrefix)) !== $commmonPrefix)
+		if (substr($currentPath, 0, strlen($commonPrefix)) !== $commonPrefix)
 		{
 			return;
 		}
 
-		$currentPath = substr($currentPath, strlen($commmonPrefix));
+		$currentPath = substr($currentPath, strlen($commonPrefix));
 
 		// This might be followed by index.php and a slash. We need to remove that
 		if (substr($currentPath, 0, 10) === 'index.php/')

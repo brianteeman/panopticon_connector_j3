@@ -37,6 +37,11 @@ class ExtensionsModel extends \JModelList
 		$updateRelevantEIDs = $this->getPossiblyNaughtExtensionIDs();
 		\JArrayHelper::toInteger($updateRelevantEIDs);
 
+		if (empty($updateRelevantEIDs))
+		{
+			$updateRelevantEIDs = [-1];
+		}
+
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
 			->select([

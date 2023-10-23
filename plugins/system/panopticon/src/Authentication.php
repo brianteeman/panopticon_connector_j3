@@ -17,14 +17,18 @@ class Authentication
 
 		$app = \JFactory::getApplication();
 
-		$secret = $secret ?: strtolower(hash_hmac('sha256', implode(':', [
-			JPATH_SITE,
-			$app->get('host'),
-			$app->get('user'),
-			$app->get('password'),
-			$app->get('db'),
-			$app->get('dbprefix'),
-		]), $app->get('secret')));
+		/**
+		 * Why use a simpler method?
+		 *
+		 * Some idiotic plugins overwrite the database connection information in the frontend of the site. Therefore,
+		 * the token you see in the backend and the token you need to use in the frontend are _different_.
+		 */
+		$secret = $secret
+			?: strtolower(
+				hash_hmac(
+					'sha256', __DIR__, $app->get('secret')
+				)
+			);
 
 		return $secret;
 	}
@@ -45,7 +49,8 @@ class Authentication
 		// Apache specific fixes. See https://github.com/symfony/symfony/issues/19693
 		if (
 			empty($authHeader) && \PHP_SAPI === 'apache2handler'
-			&& function_exists('apache_request_headers') && apache_request_headers() !== false
+			&& function_exists('apache_request_headers')
+			&& apache_request_headers() !== false
 		)
 		{
 			$apacheHeaders = array_change_key_case(apache_request_headers(), CASE_LOWER);
@@ -67,6 +72,35 @@ class Authentication
 			$tokenString = $input->server->get('HTTP_X_JOOMLA_TOKEN', '', 'string');
 		}
 
-		return hash_equals($this->getSecret(), $tokenString);
+		// DO NOT INLINE. We want to run both checks.
+		$check1 = hash_equals($this->getSecret(), $tokenString);
+		$check2 = hash_equals($this->getOldSecret(), $tokenString);
+
+		return $check1 || $check2;
+	}
+
+	private function getOldSecret(): string
+	{
+		static $secret = null;
+
+		$app = \JFactory::getApplication();
+
+		$secret = $secret
+			?: strtolower(
+				hash_hmac(
+					'sha256', implode(
+					':', [
+					JPATH_SITE,
+					$app->get('host'),
+					$app->get('user'),
+					$app->get('password'),
+					$app->get('db'),
+					$app->get('dbprefix'),
+				]
+				), $app->get('secret')
+				)
+			);
+
+		return $secret;
 	}
 }

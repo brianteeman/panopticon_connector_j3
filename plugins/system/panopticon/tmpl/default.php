@@ -31,13 +31,25 @@ $rewrite = $app->get('sef_rewrite', 0) == 1;
 			<td>
 				<?php if ($sef && $rewrite): ?>
 					<code><?= htmlentities(\JUri::root()) ?>panopticon_api</code>
-				<?php elseif ($sef): ?>
-					<code><?= htmlentities(\JUri::root()) ?>index.php/panopticon_api</code>
 				<?php else: ?>
-					<code><?= htmlentities(\JUri::root()) ?>index.php?/panopticon_api</code>
+					<code><?= htmlentities(\JUri::root()) ?>index.php/panopticon_api</code>
 				<?php endif ?>
 			</td>
 		</tr>
+		<?php if ($sef && $rewrite): ?>
+		<tr>
+			<th scope="row">
+				<?= JText::_('PLG_SYSTEM_PANOPTICON_ENDPOINT_ALT') ?>
+			</th>
+			<td>
+				<code><?= htmlentities(\JUri::root()) ?>index.php/panopticon_api</code>
+				<br/>
+				<span class="small">
+					<?= JText::_('PLG_SYSTEM_PANOPTICON_ENDPOINT_ALT_DESC') ?>
+				</span>
+			</td>
+		</tr>
+		<?php endif ?>
 		<tr>
 			<th scope="row">
 				<?= JText::_('PLG_SYSTEM_PANOPTICON_TOKEN') ?>

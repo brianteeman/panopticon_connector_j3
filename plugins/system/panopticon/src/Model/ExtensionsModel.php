@@ -11,7 +11,10 @@ defined('_JEXEC') || die;
 
 use Akeeba\PanopticonConnector\Controller\Mixit\ElementToExtensionIdTrait;
 use Exception;
+use JModelLegacy;
+use JUpdater;
 use stdClass;
+use Throwable;
 
 class ExtensionsModel extends \JModelList
 {
@@ -44,14 +47,16 @@ class ExtensionsModel extends \JModelList
 
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true)
-			->select([
-				$db->quoteName('e.extension_id', 'id'),
-				$db->quoteName('e') . '.*',
-				$db->quoteName('u.version', 'new_version'),
-				$db->quoteName('u.detailsurl'),
-				$db->quoteName('u.infourl'),
-				'NULL AS ' . $db->quoteName('changelogurl'),
-			])
+			->select(
+				[
+					$db->quoteName('e.extension_id', 'id'),
+					$db->quoteName('e') . '.*',
+					$db->quoteName('u.version', 'new_version'),
+					$db->quoteName('u.detailsurl'),
+					$db->quoteName('u.infourl'),
+					'NULL AS ' . $db->quoteName('changelogurl'),
+				]
+			)
 			->from($db->quoteName('#__extensions', 'e'))
 			->join(
 				'LEFT OUTER',
@@ -97,28 +102,9 @@ class ExtensionsModel extends \JModelList
 	protected function _getList($query, $limitstart = 0, $limit = 0)
 	{
 		// Force-reload the update before listing extensions?
-		if ($this->getState('filter.force', false))
-		{
-			if (!class_exists(\InstallerModelUpdate::class))
-			{
-				require_once JPATH_ADMINISTRATOR . '/components/com_installer/models/update.php';
-			}
-
-			/** @var \InstallerModelUpdate $model */
-			$model = \JModelLegacy::getInstance('Update', 'InstallerModel', ['ignore_request' => true]);
-
-			// Get the updates caching duration.
-			$params       = \JComponentHelper::getComponent('com_installer')->getParams();
-			$cacheTimeout = 3600 * ((int) $params->get('cachetimeout', 6));
-
-			// Get the minimum stability.
-			$minimumStability = (int) $params->get('minimum_stability', \JUpdater::STABILITY_STABLE);
-
-			// Purge the table before checking again.
-			$model->purge();
-
-			$model->findUpdates(0, $cacheTimeout, $minimumStability);
-		}
+		$this->refreshUpdateInformation(
+			$this->getState('filter.force', false), $this->getState('filter.timeout', null)
+		);
 
 		// Get all items from the database. We deliberately don't apply any limits just yet.
 		$items = parent::_getList($query);
@@ -168,11 +154,19 @@ class ExtensionsModel extends \JModelList
 		$items = array_map(
 			function (object $item) use ($jLang): object {
 				// Translate the client, extension type, and folder
-				$item->client_translated = \JText::_([
-					0 => 'JSITE', 1 => 'JADMINISTRATOR', 3 => 'JAPI',
-				][$item->client_id] ?? 'JSITE');
+				$item->client_translated = \JText::_(
+					[
+						0 => 'JSITE',
+						1 => 'JADMINISTRATOR',
+						3 => 'JAPI',
+					][$item->client_id] ?? 'JSITE'
+				);
 				$item->type_translated   = \JText::_('COM_INSTALLER_TYPE_' . strtoupper($item->type));
-				$item->folder_translated = @$item->folder ? $item->folder : \JText::_('COM_INSTALLER_TYPE_NONAPPLICABLE');
+				$item->folder_translated = @$item->folder
+					? $item->folder
+					: \JText::_(
+						'COM_INSTALLER_TYPE_NONAPPLICABLE'
+					);
 
 				// Load an extension's language files (if applicable)
 				$path = $item->client_id ? JPATH_ADMINISTRATOR : JPATH_SITE;
@@ -306,8 +300,7 @@ class ExtensionsModel extends \JModelList
 
 		// Mark items as naughty or nice
 		$items = array_map(
-			function ($item) use ($naughtyExtensions)
-			{
+			function ($item) use ($naughtyExtensions) {
 				$item->naughtyUpdates = $naughtyExtensions[$item->id] ?? null;
 
 				return $item;
@@ -452,7 +445,7 @@ class ExtensionsModel extends \JModelList
 			)
 			->from($db->quoteName('#__updates', 'u'))
 			->innerJoin(
-				$db->quoteName('#__extensions', 'e')  . ' ON ' .
+				$db->quoteName('#__extensions', 'e') . ' ON ' .
 				$db->quoteName('e.element') . ' = ' . $db->quoteName('u.element') .
 				' AND ' .
 				$db->quoteName('e.type') . ' = ' . $db->quoteName('u.type') .
@@ -488,5 +481,72 @@ class ExtensionsModel extends \JModelList
 			->where($db->quoteName('extension_id') . ' = ' . (int) $pid);
 
 		return $db->setQuery($query)->loadObject() ?? null;
+	}
+
+	/**
+	 * @param   mixed  $forceReload
+	 *
+	 * @return void
+	 */
+	private function refreshUpdateInformation(
+		mixed $forceReload, ?int $cacheTimeout = null, ?string $minStability = null
+	): void
+	{
+		// Get the updates caching duration and minimum stability
+		$params       = \JComponentHelper::getComponent('com_installer')->getParams();
+		$cacheTimeout = $cacheTimeout ?? 3600 * ((int) $params->get('cachetimeout', 6));
+		$minStability = $minStability ?? (int) $params->get('minimum_stability', JUpdater::STABILITY_STABLE);
+
+		// Make sure the parameters have values and that they are within bounds.
+		$cacheTimeout = (int) ($cacheTimeout ?: 6);
+		$minStability = (int) ($minStability ?: JUpdater::STABILITY_STABLE);
+
+		if ($cacheTimeout <= 0)
+		{
+			$cacheTimeout = 1;
+		}
+		elseif ($cacheTimeout >= 24)
+		{
+			$cacheTimeout = 24;
+		}
+
+		if (!in_array($minStability, [
+			JUpdater::STABILITY_DEV, JUpdater::STABILITY_ALPHA, JUpdater::STABILITY_BETA, JUpdater::STABILITY_RC,
+			JUpdater::STABILITY_STABLE
+		])) {
+			$minStability = JUpdater::STABILITY_STABLE;
+		}
+
+		// Force-reload the update before listing extensions, if asked to do so.
+		if ($forceReload)
+		{
+
+			try
+			{
+				if (!class_exists(\InstallerModelUpdate::class))
+				{
+					require_once JPATH_ADMINISTRATOR . '/components/com_installer/models/update.php';
+				}
+
+				/** @var \InstallerModelUpdate $model */
+				JModelLegacy::getInstance(
+					'Update', 'InstallerModel', ['ignore_request' => true]
+				)->purge();
+			}
+			catch (Throwable $e)
+			{
+				// Ignore any internal / database errors here.
+			}
+		}
+
+		// Ask Joomla! to refresh its update information.
+		try
+		{
+			JUpdater::getInstance()->findUpdates(0, $cacheTimeout, $minStability);
+		}
+		catch (Throwable $e)
+		{
+			// Just in case…
+		}
 	}
 }

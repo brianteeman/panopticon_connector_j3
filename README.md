@@ -5,9 +5,11 @@ Allows you to connect Joomla 3.9 and 3.10 sites to [Akeeba Panopticon](https://g
 ## Requirements
 
 * Joomla 3.9 or 3.10
-* PHP 7.2, 7.3, 7.4, 8.0, 8.1, or 8.2
+* PHP 7.2, 7.3, 7.4, and 8.0 (as well as8.1, 8.2, and 8.3; see important note below)
 * (Optional) Akeeba Backup Professional 7.x or 8.x — to enable backup features
 * (Optional) Admin Tools Professional 6.x — to enable security features
+
+**Important note**: Joomla! 3.10 only officially supports PHP up to and including 8.0, with partial PHP 8.1 support. PHP 8.2 and 8.3 are not officially supported. While our code should work with PHP 8.1 and later, neither Joomla! 3, nor third party extensions written for Joomla! 3, are guaranteed to work. As a result, using Joomla! 3 with these newer PHP versions may result in connectivity problems for reasons outside our control.
 
 ## License
 

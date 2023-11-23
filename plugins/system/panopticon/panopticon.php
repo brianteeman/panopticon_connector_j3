@@ -75,8 +75,13 @@ class plgSystemPanopticon extends \JPlugin
 		// At this point, we have an API path we are supposed to handle. First, register the PSR-4 autoloader.
 		JLoader::registerNamespace('Akeeba\\PanopticonConnector', __DIR__ . '/src', false, false, 'psr4');
 
+		// Load polyfills
+		require_once __DIR__ . '/polyfills.php';
+
+		// Load the version
 		require_once __DIR__ . '/version.php';
 
+		// Route the request
 		try
 		{
 			$input = $this->app->input;

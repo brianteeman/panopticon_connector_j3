@@ -9,6 +9,7 @@ namespace Akeeba\PanopticonConnector\Controller\Mixit;
 
 defined('_JEXEC') || die;
 
+use Akeeba\PanopticonConnector\Library\ServerInfo;
 use Akeeba\PanopticonConnector\Version\Version as VersionParser;
 use Exception;
 use Throwable;
@@ -54,6 +55,7 @@ trait JoomlaUpdateTrait
 				'api'     => $apiLevel,
 			],
 			'admintools'          => $this->getAdminToolsInformation(),
+			'serverInfo'          => (new ServerInfo(\JFactory::getDbo()))(),
 		];
 
 		// Get the file_joomla pseudo-extension's ID

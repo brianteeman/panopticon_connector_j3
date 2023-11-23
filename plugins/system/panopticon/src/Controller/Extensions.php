@@ -20,6 +20,7 @@ class Extensions extends AbstractController
 		$core       = $input->getInt('core', 0);
 		$force      = $input->getBool('force', false);
 		$pageParams = $input->getInt('page', []);
+		$timeout    = $input->getInt('timeout', null);
 		$pageParams = is_array($pageParams) ? $pageParams : [];
 		$limit      = $pageParams['limit'] ?? 10000;
 		$limitStart = $pageParams['offset'] ?? 0;
@@ -43,6 +44,7 @@ class Extensions extends AbstractController
 		$model->setState('filter.protected', $protected);
 		$model->setState('filter.core', $core);
 		$model->setState('filter.force', $force);
+		$model->setState('filter.timeout', $timeout);
 
 		$ret = $this->asItemsList('extension', $model->getItems() ?: [], $model->getPagination());
 

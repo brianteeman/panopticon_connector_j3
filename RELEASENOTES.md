@@ -6,7 +6,7 @@ This is the connector component for [Akeeba Panopticon](https://github.com/akeeb
 
 ## 🔎 Release highlights
 
-This is a bug-fix release.
+* **✨ Collect server information**. Panopticon can now collect and display information about your site's server.
 
 ## 🖥️ System Requirements
 
@@ -21,6 +21,7 @@ This is a bug-fix release.
 
 ## 📋 CHANGELOG
 
+* ✨ Collect server information.
 * ✏️ Tell Joomla! to refresh its updates cache when requesting update information.
 
 Legend:

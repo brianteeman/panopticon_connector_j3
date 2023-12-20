@@ -44,6 +44,6 @@
     </config>
 
     <updateservers>
-        <server type="extension" priority="1" name="Akeeba Panopticon Connector for Joomla! 3.9 and 3.10">https://akeeba-cdn.s3.amazonaws.com/updates/plg_system_panopticon.xml</server>
+        <server type="extension" priority="1" name="Akeeba Panopticon Connector for Joomla! 3.9 and 3.10">https://cdn.akeeba.com/updates/plg_system_panopticon.xml</server>
     </updateservers>
 </extension>

@@ -1,6 +1,6 @@
 ## ℹ️ What is this?
 
-This is the connector component for [Akeeba Panopticon](https://github.com/akeeba/panopticon), our self-hosted site monitoring software. You need to install it on your site to be able to monitor it with Akeeba Panopticon.
+This is the connector plugin for [Akeeba Panopticon](https://github.com/akeeba/panopticon), our self-hosted site monitoring software. You need to install it on your site to be able to monitor it with Akeeba Panopticon.
 
 ℹ️ If you have a Joomla! 4, or Joomla! 5 site please [look at the Joomla 4 & 5 connector's repository](https://github.com/akeeba/panopticon-connector/releases/latest) instead.
 

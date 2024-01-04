@@ -6,7 +6,7 @@ This is the connector plugin for [Akeeba Panopticon](https://github.com/akeeba/p
 
 ## 🔎 Release highlights
 
-* **✨ Collect server information**. Panopticon can now collect and display information about your site's server.
+This is a bugfix release
 
 ## 🖥️ System Requirements
 
@@ -21,8 +21,7 @@ This is the connector plugin for [Akeeba Panopticon](https://github.com/akeeba/p
 
 ## 📋 CHANGELOG
 
-* ✨ Collect server information.
-* ✏️ Tell Joomla! to refresh its updates cache when requesting update information.
+* 🐞 Missing polyfills.php from the XML manifest [gh-8]
 
 Legend:
 * 🚨 Security update

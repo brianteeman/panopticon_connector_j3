@@ -484,12 +484,17 @@ class ExtensionsModel extends \JModelList
 	}
 
 	/**
-	 * @param   mixed  $forceReload
+	 * Refreshes the update information.
 	 *
-	 * @return void
+	 * @param   bool         $forceReload   Whether to force-reload the update before listing extensions.
+	 * @param   int|null     $cacheTimeout  The caching duration for updates in seconds. Default is null.
+	 * @param   string|null  $minStability  The minimum stability level for updates. Default is null.
+	 *
+	 * @return  void
+	 * @since   1.0.0
 	 */
 	private function refreshUpdateInformation(
-		mixed $forceReload, ?int $cacheTimeout = null, ?string $minStability = null
+		bool $forceReload, ?int $cacheTimeout = null, ?string $minStability = null
 	): void
 	{
 		// Get the updates caching duration and minimum stability

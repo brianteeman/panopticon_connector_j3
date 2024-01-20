@@ -21,7 +21,8 @@ This is a bugfix release
 
 ## 📋 CHANGELOG
 
-* 🐞 Missing polyfills.php from the XML manifest [gh-8]
+* 🐞 Cannot get extensions list on PHP 7
+* 🐞 Failure to connect when Akeeba Backup Core is installed
 
 Legend:
 * 🚨 Security update

@@ -38,12 +38,21 @@ class AkeebaBackupInfo extends AbstractController
 			return $ret;
 		}
 
+		$versionFile = JPATH_ADMINISTRATOR . '/components/com_akeeba/version.php';
+
+		if (@is_file($versionFile) && @is_readable($versionFile))
+		{
+			require_once $versionFile;
+		}
+
+		$isPro = defined('AKEEBA_PRO') && boolval(AKEEBA_PRO);
+
 		$ret->id        = \JComponentHelper::getComponent('com_akeeba')->id;
 		$ret->installed = true;
 		$ret->version   = $this->getComponentVersion();
-		$ret->api       = $this->getMaxApiVersion();
-		$ret->secret    = $this->getSecret();
-		$ret->endpoints = $this->getEndpoints();
+		$ret->api       = $isPro ? $this->getMaxApiVersion() : 0;
+		$ret->secret    = $isPro ? $this->getSecret() : null;
+		$ret->endpoints = $isPro ? $this->getEndpoints() : [];
 
 		return $ret;
 	}
@@ -121,7 +130,7 @@ class AkeebaBackupInfo extends AbstractController
 	private function getVersionFromManifest(): ?string
 	{
 		$manifestPath = rtrim(JPATH_ADMINISTRATOR, DIRECTORY_SEPARATOR . '/') .
-			'/components/com_akeeba/akeeba.xml';
+		                '/components/com_akeeba/akeeba.xml';
 
 		if (!file_exists($manifestPath) || !is_readable($manifestPath))
 		{
@@ -238,11 +247,32 @@ class AkeebaBackupInfo extends AbstractController
 		$engineRoot   = JPATH_ADMINISTRATOR . '/components/com_akeeba/BackupEngine';
 		$platformRoot = JPATH_ADMINISTRATOR . '/components/com_akeeba/BackupPlatform/Joomla3x';
 
-		// Yeah, well, no idea what is going on. Let me create a new secret key instead.
-		if (!@is_dir($engineRoot))
+		// Engine or platform not found?
+		if (!@is_dir($engineRoot) || !@is_dir($platformRoot))
 		{
 			return null;
 		}
+
+		// Is FOF 4 loaded?
+		if (!class_exists(\FOF40\Container\Container::class))
+		{
+			$fofPath = JPATH_LIBRARIES . '/fof40/include.php';
+
+			if (!is_file($fofPath))
+			{
+				return null;
+			}
+
+			try
+			{
+				require_once $fofPath;
+			}
+			catch (\Throwable $e)
+			{
+				return null;
+			}
+		}
+
 
 		// Necessary defines for Akeeba Engine
 		if (!defined('AKEEBAENGINE'))
@@ -265,21 +295,28 @@ class AkeebaBackupInfo extends AbstractController
 			$app->getSession()->set('akeebabackup.profile', 1);
 		}
 
-		// Load Akeeba Engine
-		require_once AKEEBAROOT . '/Factory.php';
+		try
+		{
+			// Load Akeeba Engine
+			require_once AKEEBAROOT . '/Factory.php';
 
-		// Tell the Akeeba Engine where to load the platform from
-		Platform::addPlatform('joomla', $platformRoot);
+			// Tell the Akeeba Engine where to load the platform from
+			Platform::addPlatform('joomla3x', $platformRoot);
 
-		// Load the configuration
-		$akeebaEngineConfig = Factory::getConfiguration();
+			// Load the configuration
+			$akeebaEngineConfig = Factory::getConfiguration();
 
-		Platform::getInstance()->load_configuration();
+			Platform::getInstance()->load_configuration();
 
-		unset($akeebaEngineConfig);
+			unset($akeebaEngineConfig);
 
-		// Decrypt the encrypted setting
-		return Factory::getSecureSettings()->decryptSettings($secret) ?: '';
+			// Decrypt the encrypted setting
+			return Factory::getSecureSettings()->decryptSettings($secret) ?: '';
+		}
+		catch (\Throwable $e)
+		{
+			return null;
+		}
 	}
 
 	private function createSecret(): ?string

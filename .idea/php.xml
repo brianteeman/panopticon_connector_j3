@@ -12,6 +12,7 @@
   </component>
   <component name="PhpIncludePathManager">
     <include_path>
+      <path value="$PROJECT_DIR$/../../graveyard/backup" />
       <path value="$PROJECT_DIR$/../../master/joomla-cms" />
       <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="/var/www/boot/configuration.php" />

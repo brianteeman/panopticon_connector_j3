@@ -4,6 +4,8 @@ This is the connector plugin for [Akeeba Panopticon](https://github.com/akeeba/p
 
 ℹ️ If you have a Joomla! 4, or Joomla! 5 site please [look at the Joomla 4 & 5 connector's repository](https://github.com/akeeba/panopticon-connector/releases/latest) instead.
 
+ℹ️ If you have a WordPress site please [look at the WordPress connector's repository](https://github.com/akeeba/panopticon-connector-wordpress/releases/latest) instead.
+
 ## 🔎 Release highlights
 
 This is a bugfix release

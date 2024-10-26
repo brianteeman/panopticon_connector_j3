@@ -2,6 +2,7 @@
 
 * 🐞 Cannot get extensions list on PHP 7
 * 🐞 Failure to connect when Akeeba Backup Core is installed
+* ✏️ Option to disable system information collection.
 
 # Akeeba Panopticon Connector for Joomla! 3.x version 1.0.3
 

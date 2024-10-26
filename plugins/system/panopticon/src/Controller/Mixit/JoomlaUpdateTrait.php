@@ -22,6 +22,9 @@ trait JoomlaUpdateTrait
 
 	public function getJoomlaUpdateInfo(bool $force = false): object
 	{
+		$pluginParams  = new \JRegistry(\JPluginHelper::getPlugin('system', 'panopticon')->params);
+		$sysInfoToggle = $pluginParams->get('sysinfo', 1);
+
 		// Get the update parameters from the com_installer configuration
 		$params           = \JComponentHelper::getComponent('com_installer')->getParams();
 		$cacheHours       = (int) $params->get('cachetimeout', 6);
@@ -55,7 +58,7 @@ trait JoomlaUpdateTrait
 				'api'     => $apiLevel,
 			],
 			'admintools'          => $this->getAdminToolsInformation(),
-			'serverInfo'          => (new ServerInfo(\JFactory::getDbo()))(),
+			'serverInfo'          => $sysInfoToggle ? (new ServerInfo(\JFactory::getDbo()))() : null,
 		];
 
 		// Get the file_joomla pseudo-extension's ID

@@ -34,6 +34,13 @@
     <config>
         <fields name="params" addfieldpath="/plugins/system/panopticon/fields">
             <fieldset name="basic">
+                <field name="dummy1"
+                       label=""
+                       type="panopticoninfo"
+                       default=""
+                       readonly="true"
+                />
+
                 <field name="sysinfo"
                        type="radio"
                        layout="joomla.form.field.radio.switcher"

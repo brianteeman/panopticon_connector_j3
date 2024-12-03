@@ -23,8 +23,7 @@ This is a bugfix release
 
 ## 📋 CHANGELOG
 
-* 🐞 Cannot get extensions list on PHP 7
-* 🐞 Failure to connect when Akeeba Backup Core is installed
+* 🐞 Accidentally removed the panel showing connection info
 
 Legend:
 * 🚨 Security update

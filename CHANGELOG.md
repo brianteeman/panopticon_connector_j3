@@ -1,3 +1,7 @@
+# Akeeba Panopticon Connector for Joomla! 3.x version 1.0.5
+
+* 🐞 Accidentally removed the panel showing connection info 
+
 # Akeeba Panopticon Connector for Joomla! 3.x version 1.0.4
 
 * 🐞 Cannot get extensions list on PHP 7

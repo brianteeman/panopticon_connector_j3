@@ -44,7 +44,7 @@ trait SaveComponentParamsTrait
 		$refProp->setValue($components);
 	}
 
-	private function clearCacheGroupJoomla3(string $group, int $client_id, object $app = null): array
+	private function clearCacheGroupJoomla3(string $group, int $client_id, ?object $app = null): array
 	{
 		$app = $app ?? \JFactory::getApplication();
 

@@ -1,3 +1,7 @@
+# Akeeba Panopticon Connector for Joomla! 3.x version 1.0.6
+ 
+* 🐞 Invalid UTF-8 characters could result an empty JSON output
+
 # Akeeba Panopticon Connector for Joomla! 3.x version 1.0.5
 
 * 🐞 Accidentally removed the panel showing connection info 

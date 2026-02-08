@@ -159,7 +159,8 @@ class plgSystemPanopticon extends \JPlugin
 
 		$this->app->sendHeaders();
 
-		echo json_encode($data);
+		// The flag ensures that invalid UTF-8 characters are replaced with a Unicode replacement character
+		echo json_encode($data, JSON_INVALID_UTF8_SUBSTITUTE);
 
 		$this->app->close();
 	}

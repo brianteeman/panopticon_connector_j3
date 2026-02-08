@@ -1,5 +1,6 @@
-# Akeeba Panopticon Connector for Joomla! 3.x version 1.0.6
- 
+# Akeeba Panopticon Connector for Joomla! 3.x version 1.1.0
+
+* ✨ Remote extension installation
 * 🐞 Invalid UTF-8 characters could result an empty JSON output
 
 # Akeeba Panopticon Connector for Joomla! 3.x version 1.0.5

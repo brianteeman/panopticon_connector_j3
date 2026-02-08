@@ -310,6 +310,18 @@ class plgSystemPanopticon extends \JPlugin
 			new \Akeeba\PanopticonConnector\Controller\AdmintoolsScans()
 		));
 
+		$router->addRoute(new Route(
+			'POST',
+			self::API_PREFIX . 'extension/install',
+			new \Akeeba\PanopticonConnector\Controller\ExtensionInstall()
+		));
+
+		$router->addRoute(new Route(
+			'PUT',
+			self::API_PREFIX . 'extension/install',
+			new \Akeeba\PanopticonConnector\Controller\ExtensionInstall()
+		));
+
 		return $router;
 	}
 }

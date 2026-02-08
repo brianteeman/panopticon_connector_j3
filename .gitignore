@@ -7,3 +7,6 @@
 ### Build & Release files
 /build/override.properties
 /release
+
+### Unused files
+/.idea/laravel-idea.xml

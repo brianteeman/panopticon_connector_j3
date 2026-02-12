@@ -322,6 +322,18 @@ class plgSystemPanopticon extends \JPlugin
 			new \Akeeba\PanopticonConnector\Controller\ExtensionInstall()
 		));
 
+		$router->addRoute(new Route(
+			'GET',
+			self::API_PREFIX . 'core/checksum/prepare',
+			new \Akeeba\PanopticonConnector\Controller\CoreChecksumPrepare()
+		));
+
+		$router->addRoute(new Route(
+			'GET',
+			self::API_PREFIX . 'core/checksum/step/:step',
+			new \Akeeba\PanopticonConnector\Controller\CoreChecksumStep()
+		));
+
 		return $router;
 	}
 }

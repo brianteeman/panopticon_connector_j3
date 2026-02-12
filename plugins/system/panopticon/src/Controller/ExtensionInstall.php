@@ -34,6 +34,15 @@ class ExtensionInstall extends AbstractController
 	{
 		$app = JFactory::getApplication();
 
+		// Check if remote extension installation is allowed
+		$plugin       = \JPluginHelper::getPlugin('system', 'panopticon');
+		$pluginParams = new \Joomla\Registry\Registry($plugin->params ?? '{}');
+
+		if (!$pluginParams->get('allow_remote_install', 1))
+		{
+			throw new RuntimeException('Remote extension installation is disabled on this site.', 403);
+		}
+
 		// Load com_installer language
 		$app->getLanguage()->load('com_installer', JPATH_ADMINISTRATOR);
 
@@ -228,31 +237,49 @@ class ExtensionInstall extends AbstractController
 			throw new RuntimeException('Package file not found', 500);
 		}
 
-		// Get the installer
-		$installer = JInstaller::getInstance();
+		// Unpack the package archive into a temporary directory
+		$package = \JInstallerHelper::unpack($packageFile);
 
-		// Attempt to install the package
-		$result = $installer->install($packageFile);
-
-		if (!$result)
+		if (empty($package) || empty($package['dir']))
 		{
-			$app = JFactory::getApplication();
-			$messages = $app->getMessageQueue();
-			$errorMsg = 'Installation failed';
-
-			// Try to get a more specific error message
-			if (!empty($messages))
-			{
-				$lastMessage = end($messages);
-				if (is_array($lastMessage) && isset($lastMessage['message']))
-				{
-					$errorMsg .= ': ' . $lastMessage['message'];
-				}
-			}
-
-			throw new RuntimeException($errorMsg, 500);
+			throw new RuntimeException('Failed to unpack the extension package.', 500);
 		}
 
-		return true;
+		$extractDir = $package['dir'];
+
+		try
+		{
+			// Get the installer
+			$installer = JInstaller::getInstance();
+
+			// Attempt to install from the extracted directory
+			$result = $installer->install($extractDir);
+
+			if (!$result)
+			{
+				$app = JFactory::getApplication();
+				$messages = $app->getMessageQueue();
+				$errorMsg = 'Installation failed';
+
+				// Try to get a more specific error message
+				if (!empty($messages))
+				{
+					$lastMessage = end($messages);
+					if (is_array($lastMessage) && isset($lastMessage['message']))
+					{
+						$errorMsg .= ': ' . $lastMessage['message'];
+					}
+				}
+
+				throw new RuntimeException($errorMsg, 500);
+			}
+
+			return true;
+		}
+		finally
+		{
+			// Clean up extracted directory
+			\JInstallerHelper::cleanupInstall($packageFile, $extractDir);
+		}
 	}
 }

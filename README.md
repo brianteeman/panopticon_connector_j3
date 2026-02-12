@@ -11,6 +11,14 @@ Allows you to connect Joomla 3.9 and 3.10 sites to [Akeeba Panopticon](https://g
 
 **Important note**: Joomla! 3.10 only officially supports PHP up to and including 8.0, with partial PHP 8.1 support. PHP 8.2 and 8.3 are not officially supported. While our code should work with PHP 8.1 and later, neither Joomla! 3, nor third party extensions written for Joomla! 3, are guaranteed to work. As a result, using Joomla! 3 with these newer PHP versions may result in connectivity problems for reasons outside our control.
 
+## Configuration
+
+### Allow Remote Extension Installation
+
+The connector includes an option to allow or disallow remote extension installation from Panopticon. This option is found in the plugin parameters (Extensions > Plugins > System - Panopticon).
+
+When set to **Yes** (the default), Panopticon can remotely install extensions on the site using the mass extension installation feature. When set to **No**, the site will refuse remote installation requests and report the status as "Disabled" in the installation summary.
+
 ## License
 
 Akeeba Panopticon Connector for Joomla! 3

@@ -7,7 +7,7 @@
 
 <extension type="plugin" group="system" version="3.9" method="upgrade">
     <name>PLG_SYSTEM_PANOPTICON</name>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <creationDate>2024-12-03</creationDate>
     <author>Nicholas K. Dionysopoulos</author>
     <authorEmail>nicholas@dionysopoulos.me</authorEmail>
@@ -16,8 +16,30 @@
     <license>GNU General Public License version 3, or later</license>
     <description>PLG_SYSTEM_PANOPTICON_XML_DESCRIPTION</description>
 
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+            <file driver="postgresql" charset="utf8">sql/install.postgresql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+            <file driver="postgresql" charset="utf8">sql/uninstall.postgresql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+            <schemapath type="postgresql">sql/updates/postgresql</schemapath>
+        </schemas>
+    </update>
+
     <files>
         <folder>fields</folder>
+        <folder>sql</folder>
         <folder>src</folder>
         <folder>tmpl</folder>
 

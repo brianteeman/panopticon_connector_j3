@@ -128,14 +128,12 @@
                 <xmlupdate xml="${update.all}" tofile="${dirs.root}/updates/plg_system_panopticon.xml" />
 
                 <!-- Upload the update XML file to S3 as well -->
-                <exec
-                        executable="s3cmd"
-                        passthru="true">
-                    <arg value="put" />
+                <exec executable="curl" passthru="true">
+                    <arg value="--ftp-create-dirs" />
+                    <arg value="--ftp-pasv" />
+                    <arg value="-T" />
                     <arg value="${dirs.root}/updates/plg_system_panopticon.xml" />
-                    <arg value="s3://${s3.bucket}/updates/plg_system_panopticon.xml" />
-                    <arg value="--acl-public" />
-                    <arg value="--add-header=Cache-Control:max-age=300" />
+                    <arg value="ftp://${bunny.user}:${bunny.password}@${bunny.hostname}${bunny.dir}/plg_system_panopticon.xml" />
                 </exec>
             </then>
         </if>

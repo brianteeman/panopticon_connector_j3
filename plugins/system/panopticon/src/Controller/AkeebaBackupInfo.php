@@ -11,10 +11,12 @@ defined('_JEXEC') || die;
 
 use Akeeba\Engine\Factory;
 use Akeeba\Engine\Platform;
+use Akeeba\PanopticonConnector\Controller\Mixit\AkeebaBackupProTrait;
 use Akeeba\PanopticonConnector\Controller\Mixit\SaveComponentParamsTrait;
 
 class AkeebaBackupInfo extends AbstractController
 {
+	use AkeebaBackupProTrait;
 	use SaveComponentParamsTrait;
 
 	public function __invoke(\JInput $input): object
@@ -38,14 +40,7 @@ class AkeebaBackupInfo extends AbstractController
 			return $ret;
 		}
 
-		$versionFile = JPATH_ADMINISTRATOR . '/components/com_akeeba/version.php';
-
-		if (@is_file($versionFile) && @is_readable($versionFile))
-		{
-			require_once $versionFile;
-		}
-
-		$isPro = defined('AKEEBA_PRO') && boolval(AKEEBA_PRO);
+		$isPro = $this->isAkeebaBackupPro();
 
 		$ret->id        = \JComponentHelper::getComponent('com_akeeba')->id;
 		$ret->installed = true;

@@ -1,3 +1,7 @@
+# Akeeba Panopticon Connector for Joomla! 3.x version 1.1.1
+
+* 🐞 Akeeba Backup Professional package extensions are now correctly reported with "Professional" in their name
+
 # Akeeba Panopticon Connector for Joomla! 3.x version 1.1.0
 
 * ✨ Remote extension installation

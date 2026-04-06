@@ -9,6 +9,7 @@ namespace Akeeba\PanopticonConnector\Model;
 
 defined('_JEXEC') || die;
 
+use Akeeba\PanopticonConnector\Controller\Mixit\AkeebaBackupProTrait;
 use Akeeba\PanopticonConnector\Controller\Mixit\ElementToExtensionIdTrait;
 use Exception;
 use JModelLegacy;
@@ -18,6 +19,7 @@ use Throwable;
 
 class ExtensionsModel extends \JModelList
 {
+	use AkeebaBackupProTrait;
 	use ElementToExtensionIdTrait;
 
 	public function __construct($config = [])
@@ -223,6 +225,20 @@ class ExtensionsModel extends \JModelList
 
 				// Translate the extension name, if applicable
 				$item->name = \JText::_($item->name);
+
+				// Append "Professional" to Akeeba Backup extension names and descriptions when the Pro version is installed
+
+				$isAkeebaBackupPro = str_contains($item->name, 'Akeeba Backup') && $this->isAkeebaBackupPro();
+
+				if ($isAkeebaBackupPro && !str_contains($item->name, 'Backup Pro'))
+				{
+					$item->name = str_replace('Akeeba Backup', 'Akeeba Backup Professional', $item->name);
+				}
+
+				if ($isAkeebaBackupPro && !str_contains($item->description, 'Backup Pro'))
+				{
+					$item->description = str_replace('Akeeba Backup', 'Akeeba Backup Professional', $item->name);
+				}
 
 				// Translate the description, if applicable
 				$item->description = empty($item->description) ? '' : \JText::_($item->description);

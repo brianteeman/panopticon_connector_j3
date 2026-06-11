@@ -11,7 +11,7 @@ defined('_JEXEC') || die;
 
 trait AkeebaBackupProTrait
 {
-	private ?bool $isAkeebaBackupProCached = null;
+	private $isAkeebaBackupProCached = null;
 
 	private function isAkeebaBackupPro(): bool
 	{

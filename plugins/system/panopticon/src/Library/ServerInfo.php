@@ -183,7 +183,7 @@ class ServerInfo
 			[, $line] = explode(':', $line, 2);
 			$line = trim($line);
 			$line = preg_replace('#\s+#', ' ', $line);
-			[$total, $used, $free,] = explode(' ', $line, 4);
+			[$total, $used, $free] = explode(' ', $line, 4);
 
 			return [
 				'total' => $total,
@@ -225,7 +225,7 @@ class ServerInfo
 		}
 		else
 		{
-			[$uptime,] = explode(',  ', $uptime ?? '');
+			[$uptime] = explode(',  ', $uptime ?? '');
 		}
 		$uptime = $this->uptimeToMinutes($uptime ?? '');
 

@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Akeeba Panopticon Connector for Joomla! 3 — a Joomla system plugin that exposes a JSON:API-compliant REST API allowing [Akeeba Panopticon](https://github.com/akeeba/panopticon) to remotely monitor and manage Joomla 3.9/3.10 sites.
 
-**Language/Framework**: PHP 7.2.5+ on Joomla! 3.x
+**Language/Framework**: PHP 7.2.5 through 8.1.x on Joomla! 3.x
 **License**: AGPL-3.0+
 
 ## Build Commands
@@ -62,6 +62,7 @@ Entry point: `plugins/system/panopticon/panopticon.php` (`plgSystemPanopticon` c
 - **Controllers** are callables: implement `__invoke(\JInput $input): object`. Routes are registered in `panopticon.php::getRouter()`.
 - **JSON:API responses** use `AbstractController::asSingleItem()` and `asItemsList()` helpers.
 - **All PHP files** start with `defined('_JEXEC') || die;` as a Joomla security guard.
+- **Runtime bounds**: minimum supported PHP is `7.2.5`; the codebase is intended to remain parse-compatible through PHP `8.1.x`. Deprecation notices on PHP `8.1+` are acceptable for this project, but syntax requiring PHP `8.2+` is not.
 - **Polyfills** in `polyfills.php` provide PHP 8 string functions (`str_contains`, `str_starts_with`, `str_ends_with`) for PHP 7.x compatibility.
 - **Traits in `Mixit/`** are used to share code across controllers (e.g., `JoomlaUpdateTrait`, `AdminToolsTrait`).
 

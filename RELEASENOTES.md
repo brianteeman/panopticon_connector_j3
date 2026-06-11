@@ -23,7 +23,7 @@ This is a bugfix release
 
 ## 📋 CHANGELOG
 
-* 🐞 Accidentally removed the panel showing connection info
+* 🐞 Some changes were incompatible with PHP 7.2 and 7.3
 
 Legend:
 * 🚨 Security update

@@ -1,3 +1,7 @@
+# Akeeba Panopticon Connector for Joomla! 3.x version 1.1.3
+
+* ✨ Support a custom base URL for the Core File Integrity checksums source
+
 # Akeeba Panopticon Connector for Joomla! 3.x version 1.1.2
 
 * 🐞 Some changes were incompatible with PHP 7.2 and 7.3

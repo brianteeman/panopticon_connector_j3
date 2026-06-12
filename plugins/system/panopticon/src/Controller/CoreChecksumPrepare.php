@@ -14,7 +14,15 @@ class CoreChecksumPrepare extends AbstractController
 	public function __invoke(\JInput $input): object
 	{
 		$version = JVERSION;
-		$url     = "https://getpanopticon.com/checksums/joomla/{$version}/sha256_squash.json.gz";
+
+		$base = trim((string) $input->get('checksumsBaseUrl', '', 'raw'));
+
+		if ($base === '' || !preg_match('#^https?://#i', $base))
+		{
+			$base = 'https://getpanopticon.com/checksums';
+		}
+
+		$url = rtrim($base, '/') . "/joomla/{$version}/sha256_squash.json.gz";
 
 		$http     = \JHttpFactory::getHttp();
 		$response = $http->get($url);

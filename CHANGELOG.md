@@ -1,6 +1,7 @@
 # Akeeba Panopticon Connector for Joomla! 3.x version 1.1.3
 
 * ✨ Support a custom base URL for the Core File Integrity checksums source
+* ✏️ Add machine-translated language packs for de-DE, el-GR, es-ES, fr-FR, it-IT, and pt-PT
 
 # Akeeba Panopticon Connector for Joomla! 3.x version 1.1.2
 

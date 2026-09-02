@@ -11,6 +11,24 @@ Allows you to connect Joomla 3.9 and 3.10 sites to [Akeeba Panopticon](https://g
 
 **Important note**: Joomla! 3.10 only officially supports PHP up to and including 8.0, with partial PHP 8.1 support. PHP 8.2 and 8.3 are not officially supported. While our code should work with PHP 8.1 and later, neither Joomla! 3, nor third party extensions written for Joomla! 3, are guaranteed to work. As a result, using Joomla! 3 with these newer PHP versions may result in connectivity problems for reasons outside our control.
 
+## Build instructions
+
+Check out this repository and Akeeba Build Tools — Public Packager using the following directory names:
+
+- `panopticon-connector-j3` This repository.
+- `buildfiles` [Akeeba Build Tools — Public Packager](https://github.com/akeeba/buildfiles-public)
+- `build.properties` A file created as per the instructions in `buildfiles/README.md`
+
+Then:
+
+```bash
+cd panopticon-connector-j3
+composer install
+phing git
+```
+
+The generated package is under `panopticon-connector-j3/release`.
+
 ## Configuration
 
 ### Allow Remote Extension Installation
